@@ -22,7 +22,7 @@
         <div class="form-group">
             <input type="hidden" value="1" name="save" />
 
-            <input type="submit" class="btn btn-info" value="Dodaj" />
+            <input type="submit" class="btn btn-info" @if ($op==0 ) value="Dodaj" @else value="Edytuj" @endif />
         </div>
     </form>
 

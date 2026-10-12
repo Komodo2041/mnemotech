@@ -32,13 +32,40 @@ class MainController extends Controller
 
             if ($validator->fails()) {
                 $validated = $validator->errors()->all();
-                return view("addmnemo", ["name" => $name, "max" => $max,  'errorforms' => implode(", ", $validated)]);
+                return view("addmnemo", ["name" => $name, "max" => $max,  'errorforms' => implode(", ", $validated), "op" => 0]);
             } else {
                 $validated = $validator->validated();
                 Mnemo::create(["name" => $name]);
                 return redirect("/");
             }
         }
-        return view("addmnemo", ["name" => $name, "max" => $max]);
+        return view("addmnemo", ["name" => $name, "max" => $max, "op" => 0]);
+    }
+
+    public function edit($id, Request $request)
+    {
+        $mn = Mnemo::find($id);
+
+        $max = $id;
+
+        $name = $request->input('name', $mn->name);
+        $save =  $request->input('save');
+        if ($save) {
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+            ]);
+
+            if ($validator->fails()) {
+                $validated = $validator->errors()->all();
+                return view("addmnemo", ["name" => $name, "max" => $max,  'errorforms' => implode(", ", $validated), "op" => 1]);
+            } else {
+                $validated = $validator->validated();
+                $mn->name = $name;
+                $mn->save();
+                return redirect("/");
+            }
+        }
+        return view("addmnemo", ["name" => $name, "max" => $max, "op" => 1]);
     }
 }
