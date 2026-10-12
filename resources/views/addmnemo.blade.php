@@ -13,6 +13,7 @@
 <div class="container">
     <form action="" method="Post">
         @csrf
+        <h4>{{$max}}</h4>
         <div class="form-group">
             <label>Nazwa</label>
             <input type="text" name="name" class="form-control" placeholder="Nazwa" value="{{$name}}">

@@ -10,7 +10,8 @@ class MainController extends Controller
 {
     public function start()
     {
-        return view("main", []);
+        $mlist = Mnemo::orderBy("id", "ASC")->get();
+        return view("main", ["mlist" => $mlist]);
     }
 
     public function add(Request $request)
@@ -31,13 +32,13 @@ class MainController extends Controller
 
             if ($validator->fails()) {
                 $validated = $validator->errors()->all();
-                return view("addmnemo", ["name" => $name,  'errorforms' => implode(", ", $validated)]);
+                return view("addmnemo", ["name" => $name, "max" => $max,  'errorforms' => implode(", ", $validated)]);
             } else {
                 $validated = $validator->validated();
                 Mnemo::create(["name" => $name]);
                 return redirect("/");
             }
         }
-        return view("addmnemo", ["name" => $name]);
+        return view("addmnemo", ["name" => $name, "max" => $max]);
     }
 }
